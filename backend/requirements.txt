@@ -1,6 +1,5 @@
 fastapi
 uvicorn
-PyMuPDF
 groq
 python-dotenv
-reportlab
+asyncpg
