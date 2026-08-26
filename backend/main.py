@@ -1,15 +1,29 @@
+import os
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import asyncpg
-import os
 from groq import AsyncGroq
 from dotenv import load_dotenv
 
+# Import database initialization from database.py
+from database import init_db
+
 load_dotenv()
 
-app = FastAPI()
+# Define the lifespan manager to run startup database setup
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Initializes database tables and default records on Render boot
+    await init_db()
+    yield
+
+app = FastAPI(lifespan=lifespan)
+
+# Setup CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,12 +32,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Use AsyncGroq client
+# Initialize AsyncGroq client
 client = AsyncGroq(api_key=os.getenv("GROQ_API_KEY"))
-# Ensure database name is 'portfolio' (matching your pgAdmin setup)
-DATABASE_URL = os.getenv(
-    "DATABASE_URL", "postgresql://postgres:codeper_bit@localhost:5432/portfolio"
-)
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 class PortfolioQuery(BaseModel):
@@ -32,6 +43,9 @@ class PortfolioQuery(BaseModel):
 
 async def search_postgres_db(user_query: str) -> str:
     """Queries PostgreSQL safely for context matching user search terms."""
+    if not DATABASE_URL:
+        return "Database URL not configured."
+
     conn = None
     try:
         conn = await asyncpg.connect(DATABASE_URL)
@@ -45,7 +59,8 @@ async def search_postgres_db(user_query: str) -> str:
             for i, word in enumerate(words):
                 idx = i + 1
                 conditions_list.append(
-                    f"(title ILIKE ${idx} OR details ILIKE ${idx} OR category ILIKE ${idx})")
+                    f"(title ILIKE ${idx} OR details ILIKE ${idx} OR category ILIKE ${idx})"
+                )
                 params.append(f"%{word}%")
 
             conditions = " OR ".join(conditions_list)
@@ -68,7 +83,6 @@ async def search_postgres_db(user_query: str) -> str:
             await conn.close()
 
 
-# main.py
 @app.post("/ask_xion")
 async def ask_portfolio_ai(ask: PortfolioQuery):
     try:
@@ -76,11 +90,15 @@ async def ask_portfolio_ai(ask: PortfolioQuery):
 
         # Fallback: if search returns no records, retrieve everything from database
         if "No specific database" in retrieved_info or "failed" in retrieved_info:
-            conn = await asyncpg.connect(DATABASE_URL)
-            all_rows = await conn.fetch("SELECT category, title, details FROM portfolio;")
-            await conn.close()
-            retrieved_info = "\n".join(
-                [f"- [{r['category'].upper()}] {r['title']}: {r['details']}" for r in all_rows])
+            if DATABASE_URL:
+                conn = await asyncpg.connect(DATABASE_URL)
+                try:
+                    all_rows = await conn.fetch("SELECT category, title, details FROM portfolio;")
+                    retrieved_info = "\n".join(
+                        [f"- [{r['category'].upper()}] {r['title']}: {r['details']}" for r in all_rows]
+                    )
+                finally:
+                    await conn.close()
 
         response = await client.chat.completions.create(
             model="openai/gpt-oss-120b",
@@ -92,7 +110,7 @@ You are Xion, the official AI portfolio assistant for CODEPER-BIT.
 Answer the visitor's question ONLY and STRICTLY using the information provided below.
 DO NOT invent or assume any technical skills, languages, or tools that are not listed here.
 If information is not listed in the retrieved data, state clearly that CODEPER-BIT has not provided details on that topic.
-Be conservative with visitor's, make them know that i am competent enough for the job. 
+Be conservative with visitor's, make them know that i am competent enough for the job.
 DO NOT write back or copy back as i gave you the info, refine it and make it look more professional.
 
 
@@ -106,7 +124,7 @@ DO NOT write back or copy back as i gave you the info, refine it and make it loo
                     "content": ask.user_message
                 }
             ],
-            temperature=0.2  # Lower temperature prevents creative hallucinations
+            temperature=0.2
         )
 
         return {"reply": response.choices[0].message.content}
