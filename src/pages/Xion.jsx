@@ -34,7 +34,7 @@ export default function Xion() {
 
         try {
             // 2. Post to FastAPI backend
-            const response = await fetch("http://localhost:8000/ask_xion", {
+            const response = await fetch("https://final-product-of-the-ai-portfolio-yddj.onrender.com/ask_xion", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
