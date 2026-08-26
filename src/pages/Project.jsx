@@ -35,8 +35,8 @@ function Projects() {
                 "TailwindCSS",
             ],
             github:
-                "https://github.com/codeper-bit/ai-portfolio-assistant",
-            demo: "https://ai-portfolio-assistant.demo.com",
+                "https://github.com/Codeper-bit/final-product-of-the-ai-portfolio",
+            demo: "https://final-product-of-the-ai-portfolio.vercel.app/projects",
         },
 
         {
