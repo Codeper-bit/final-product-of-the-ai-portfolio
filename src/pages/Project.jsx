@@ -19,7 +19,7 @@ function Projects() {
             ],
             github:
                 "https://github.com/Codeper-bit/final-product-of-the-ai-resume-analyser",
-            demo: "https://airesumeanalyser-psi.vercel.app/",
+            demo: "https://final-product-of-the-ai-resume-analyser-qj1u02vbx.vercel.app/",
         },
 
         {
