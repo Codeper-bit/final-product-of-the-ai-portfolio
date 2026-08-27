@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ai_portfolio from "../assets/ai_portfolio.JPG";
 import ai_resume_analyser from "../assets/ai_resume_analyser.JPG";
+import food_mart from "../assets/food_mart.JPG";
 function Home() {
     return (
         <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
