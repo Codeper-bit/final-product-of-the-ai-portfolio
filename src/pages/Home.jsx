@@ -119,6 +119,30 @@ function Home() {
                             </div>
                         </div>
                     </div>
+
+
+                     {/* Project 3 */}
+                     <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden hover:border-slate-700 transition duration-300 flex flex-col">
+                        <div className="h-48 bg-slate-800 overflow-hidden">
+                            <img
+                                src={food-mart}
+                                alt="FoodMart Agentic"
+                                className="w-full h-full object-cover object-top"
+                            />
+                        </div>
+                        <div className="p-6 flex flex-col flex-grow">
+                            <h3 className="text-xl font-bold text-white mb-2">Food Mart Agentic</h3>
+                            <p className="text-slate-400 text-sm mb-4 flex-grow">
+                                FoodMart is a full-stack e-commerce web platform designed to stramline food ordering. featuring dynamic product filtering, adn a fast email checkout system, FoodMart also includes a built-in AI customer Suppot Assistant powered by Groq to answer store inquires 24/7.
+                            </p>
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                <span className="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded">Python</span>
+                                <span className="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded">FastAPI</span>
+                                <span className="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded">React</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </section>
 
