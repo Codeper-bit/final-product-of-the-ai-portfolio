@@ -125,7 +125,7 @@ function Home() {
                      <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden hover:border-slate-700 transition duration-300 flex flex-col">
                         <div className="h-48 bg-slate-800 overflow-hidden">
                             <img
-                                src={food-mart}
+                                src={food_mart}
                                 alt="FoodMart Agentic"
                                 className="w-full h-full object-cover object-top"
                             />
