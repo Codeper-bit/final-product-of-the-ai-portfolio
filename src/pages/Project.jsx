@@ -1,6 +1,7 @@
 import React from "react";
 import ai_portfolio from "../assets/ai_portfolio.JPG";
 import ai_resume_analyser from "../assets/ai_resume_analyser.JPG";
+import food_mart from "../assets/food_mart.JPG";
 
 function Projects() {
     const projectsList = [
@@ -33,6 +34,7 @@ function Projects() {
                 "FastAPI",
                 "React",
                 "TailwindCSS",
+                "OpenAI API",
             ],
             github:
                 "https://github.com/Codeper-bit/final-product-of-the-ai-portfolio",
@@ -41,19 +43,18 @@ function Projects() {
 
         {
             id: 3,
-            title: "Student Result System",
+            title: "FoodMart Agentic",
             description:
-                "A full-stack web application for managing, calculating, and generating detailed academic performance reports and visual statistics for students.",
+                "FoodMart: Order your favorite fresh meals and goceries online with real-time AI customer support and instant local delivery",
             technologies: [
-                "Node.js",
-                "Express",
-                "PostgreSQL",
+                "Python",
                 "React",
                 "Tailwind CSS",
+                "OpenAI API",
             ],
             github:
-                "https://github.com/codeper-bit/student-result-system",
-            demo: "https://student-result.demo.com",
+                "https://github.com/codeper-bit/food-mart-agentic",
+            demo: "https://food-mart-agentic.vercel.app/",
         },
 
     ];
