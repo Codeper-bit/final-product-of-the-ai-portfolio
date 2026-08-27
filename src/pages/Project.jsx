@@ -44,6 +44,7 @@ function Projects() {
         {
             id: 3,
             title: "FoodMart Agentic",
+            image: food_mart,
             description:
                 "FoodMart: Order your favorite fresh meals and goceries online with real-time AI customer support and instant local delivery",
             technologies: [
